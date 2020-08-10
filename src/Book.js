@@ -4,6 +4,11 @@ import Navbar from './Navbar'
 import Paper from './Paper'
 
 function Book({chapterCount}) {
+
+  const netlify = "https://8th-grade.netlify.app"
+  const localhost = "http://localhost:3000"
+  const production = true
+  const http = production ? netlify : localhost
   const [chapter, setChapter] = useState(0)
   const [showChapterLastPage, setShowChapterLastPage] = useState(false)
   const [page, setPage] = useState(1)
@@ -31,7 +36,7 @@ function Book({chapterCount}) {
   })
 
   useEffect(()=>{
-    fetch(`https://8th-grade.netlify.app/books/8th-grade/tableOfContent.json`)
+    fetch(`${http}/books/8th-grade/tableOfContent.json`)
     .then(res => res.json())
     .then(data => {
       tableOfContent.current = data
@@ -41,7 +46,7 @@ function Book({chapterCount}) {
 
   useEffect(()=> {
     if (chapter !== undefined ) {
-      fetch(`https://8th-grade.netlify.app/books/8th-grade/chapter${chapter}.txt`)
+      fetch(`${http}/books/8th-grade/chapter${chapter}.txt`)
       .then(res => res.text())
       .then(data => {
          chapterText.current = data
@@ -57,7 +62,7 @@ function Book({chapterCount}) {
          setChapter(chapter)
       })
     }
-  },[chapter, showChapterLastPage])
+  },[chapter, showChapterLastPage,http])
 
   function formatPages(data, chapter) {
     const paperWidth = window.visualViewport.width
