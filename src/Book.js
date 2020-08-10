@@ -70,7 +70,7 @@ function Book({chapterCount}) {
     pages[0] = `<div class='_page0'>
                   <div>
                     Chapter ${chapter} <br/>
-                    ${tableOfContent.current[chapter]}
+                    ${tableOfContent.current[chapter] ?? "Foreword"}
                   </div>
                 </div>
                 `
