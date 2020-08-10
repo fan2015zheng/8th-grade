@@ -1,0 +1,28 @@
+._page {
+  width: 150px;
+}
+
+._chater {
+  max-width: 100px;
+  text-overflow: ellipsis;
+}
+
+._brand {
+  color: rebeccapurple !important;
+  border: 0.5px dashed rebeccapurple;
+  padding: 0 10px 2px;
+  border-radius: 5px;
+  font-size: 25px;
+}
+
+._navbar {
+  z-index: 5;
+}
+
+._pointer {
+  cursor: pointer;
+}
+
+._dropMaxH {
+  max-height: 400px;
+}
