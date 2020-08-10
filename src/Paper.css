@@ -1,14 +1,12 @@
 ._paperLeft {
   height: 100%;
   width: 25%;
-  background-color: burlywood;
   z-index: 3;
 }
 
 ._paperRight {
   height: 100%;
   width: 35%;
-  background-color: cadetblue;
   z-index: 3;
 }
 
