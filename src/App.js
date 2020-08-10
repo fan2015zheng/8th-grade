@@ -5,7 +5,7 @@ import Book from './Book'
 function App() {
 
   return (<>
-    <Book chapterCount={2}/>
+    <Book chapterCount={18}/>
   </>);
 }
 

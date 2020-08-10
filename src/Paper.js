@@ -14,8 +14,6 @@ function Paper({ prevPage, nextPage ,text,
     position: 'absolute',
     width: '100%',
     height: '100%',
-    background: 'pink',
-    border: '3px dashed tan',
     display: 'flex'
   }
   const printStyle = {
