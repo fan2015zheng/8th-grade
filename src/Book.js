@@ -77,7 +77,7 @@ function Book({chapterCount}) {
       const xMax = paperWidth - pagePaddingLeft - pagePaddingRight
       const yMax = paperHeight - pagePaddingTop * 2
   
-      pages = formatPagesBasedOnPageSize(data, Math.ceil(xMax/10), Math.floor(yMax/28))
+      pages = formatPagesBasedOnPageSize(data, xMax/10, Math.floor(yMax/28))
       
       let caption = `Chapter ${chapter} <br/> ${tableOfContent.current[chapter]}`
       if (chapter === 0) {
@@ -191,6 +191,7 @@ function formatPagesBasedOnPageSize(data, pageXMax, pageYMax) {
 
 
 function write(pageInfo, word) {
+  
   if (word === '#newline') {
     if (pageInfo.y < pageInfo.yMax) {
       pageInfo.html = pageInfo.html + '<br/>'
@@ -210,6 +211,7 @@ function write(pageInfo, word) {
   if (pageInfo.x + 1 + len <= pageInfo.xMax) {
     pageInfo.html = pageInfo.html + " " + word
     pageInfo.x = pageInfo.x + 1 + len
+    
     return true
   } else {
     if (pageInfo.y < pageInfo.yMax) {
