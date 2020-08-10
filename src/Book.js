@@ -31,7 +31,7 @@ function Book({chapterCount}) {
   })
 
   useEffect(()=>{
-    fetch(`http://localhost:3000/books/8th-grade/tableOfContent.json`)
+    fetch(`https://8th-grade.netlify.app/books/8th-grade/tableOfContent.json`)
     .then(res => res.json())
     .then(data => {
       tableOfContent.current = data
@@ -41,7 +41,7 @@ function Book({chapterCount}) {
 
   useEffect(()=> {
     if (chapter !== undefined ) {
-      fetch(`http://localhost:3000/books/8th-grade/chapter${chapter}.txt`)
+      fetch(`https://8th-grade.netlify.app/books/8th-grade/chapter${chapter}.txt`)
       .then(res => res.text())
       .then(data => {
          chapterText.current = data
