@@ -9,7 +9,7 @@ function Book({chapterCount}) {
   const localhost = "http://localhost:3000"
   const production = true
   const http = production ? netlify : localhost
-  const [chapter, setChapter] = useState(0)
+  const [chapter, setChapter] = useState(-1)
   const [showChapterLastPage, setShowChapterLastPage] = useState(false)
   const [page, setPage] = useState(1)
   const [chapterPages, setChapterPages] = useState([])
@@ -40,45 +40,53 @@ function Book({chapterCount}) {
     .then(res => res.json())
     .then(data => {
       tableOfContent.current = data
+
+      if (chapter >= 0) {
+        fetch(`${http}/books/8th-grade/chapter${chapter}.txt`)
+        .then(res => res.text())
+        .then(data => {
+           chapterText.current = data
+           const pages = formatPages(data, chapter)
+  
+           if (showChapterLastPage) {
+             setPage(pages.length)
+           } else {
+             setPage(1)
+           }
+           
+           setChapterPages(pages)
+           setChapter(chapter)
+        })
+      } else  {
+        const pages = formatPages("", chapter)
+        setChapterPages(pages)
+        setChapter(chapter)
+      }
     })
-  })
-
-
-  useEffect(()=> {
-    if (chapter !== undefined ) {
-      fetch(`${http}/books/8th-grade/chapter${chapter}.txt`)
-      .then(res => res.text())
-      .then(data => {
-         chapterText.current = data
-         const pages = formatPages(data, chapter)
-
-         if (showChapterLastPage) {
-           setPage(pages.length)
-         } else {
-           setPage(1)
-         }
-    
-         setChapterPages(pages)
-         setChapter(chapter)
-      })
-    }
   },[chapter, showChapterLastPage,http])
 
-  function formatPages(data, chapter) {
-    const paperWidth = window.visualViewport.width
-    const paperHeight = window.visualViewport.height
-    const xMax = paperWidth - pagePaddingLeft - pagePaddingRight
-    const yMax = paperHeight - pagePaddingTop * 2
 
-    const pages = formatPagesBasedOnPageSize(data, Math.ceil(xMax/10), Math.floor(yMax/28))
-   
-    pages[0] = `<div class='_page0'>
-                  <div>
-                    Chapter ${chapter} <br/>
-                    ${tableOfContent.current[chapter] ?? "Foreword"}
-                  </div>
-                </div>
-                `
+  function formatPages(data, chapter) {
+    let pages = [""]
+
+    if (chapter === -1) {
+      pages[0] = `<div class='_bookName'><div>${"8th Grade"}</div></div>`
+    }
+    else {
+      const paperWidth = window.visualViewport.width
+      const paperHeight = window.visualViewport.height
+      const xMax = paperWidth - pagePaddingLeft - pagePaddingRight
+      const yMax = paperHeight - pagePaddingTop * 2
+  
+      pages = formatPagesBasedOnPageSize(data, Math.ceil(xMax/10), Math.floor(yMax/28))
+      
+      let caption = `Chapter ${chapter} <br/> ${tableOfContent.current[chapter]}`
+      if (chapter === 0) {
+        caption = tableOfContent.current[chapter]
+      }
+
+      pages[0] = `<div class='_page0'><div>${caption}</div></div>`
+    }
     return pages
   }
 
@@ -105,7 +113,7 @@ function Book({chapterCount}) {
   function prevPage() {
     if (page - 1 > 0) {
       setPage(page - 1)
-    } else if (chapter - 1 >= 0) {
+    } else if (chapter - 1 >= -1) {
       setChapter(chapter - 1)
       setShowChapterLastPage(true)
     }
