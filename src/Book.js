@@ -22,18 +22,49 @@ function Book({chapterCount}) {
   const fontSize = '22px'
   const lineHeight = '28px'
   
-  function handleResize() {
-    const pages = formatPages(chapterText.current, chapter)
-    setChapterPages(pages)
-  }
+
+
 
   useEffect(()=> {
+    function handleResize() {
+      const pages = formatPages(chapterText.current, chapter)
+      setChapterPages(pages)
+    }
+
+    function handleSwipeLeft() {
+      //Copy from NextPage() 😅
+      const pageCount = chapterPages.length
+   
+      if (page + 1 <= pageCount) {
+  
+        setPage(page+1)
+      } else if (chapter + 1 <= chapterCount) {
+        setChapter(chapter+1)
+        setShowChapterLastPage(false)
+      }
+    }
+
+    function handleSwipeRight() {
+      //Copy from PrevPage 😅
+      if (page - 1 > 0) {
+        setPage(page - 1)
+      } else if (chapter - 1 >= -1) {
+        setChapter(chapter - 1)
+        setShowChapterLastPage(true)
+      }
+    }
+
     window.addEventListener('resize',handleResize)
+    window.addEventListener('swiped-left', handleSwipeLeft)
+    window.addEventListener('swiped-right', handleSwipeRight)
 
     return ()=> {
+      // Important to remove to avoid funtional bugs
       window.removeEventListener('resize', handleResize)
+      window.removeEventListener('swiped-left', handleSwipeLeft)
+      window.removeEventListener('swiped-right', handleSwipeRight)
     }
-  })
+  },[chapter,page,chapterCount,chapterPages.length])
 
   useEffect(()=>{
     fetch(`${http}/books/8th-grade/tableOfContent.json`)
