@@ -9,9 +9,9 @@ function Book({chapterCount}) {
   const localhost = "http://localhost:3000"
   const production = true
   const http = production ? netlify : localhost
-  const [chapter, setChapter] = useState(-1)
-  const [showChapterLastPage, setShowChapterLastPage] = useState(false)
-  const [page, setPage] = useState(1)
+  const [chapter, setChapter] = useState(() => -1)
+  const [showChapterLastPage, setShowChapterLastPage] = useState(() => false)
+  const [page, setPage] = useState(()=>1)
   const [chapterPages, setChapterPages] = useState([])
   let tableOfContent = useRef([])
   let chapterText = useRef("")
@@ -23,6 +23,7 @@ function Book({chapterCount}) {
   const lineHeight = '28px'
   
   useEffect(()=> {
+   
     function handleResize() {
       const pages = formatPages(chapterText.current, chapter)
       setChapterPages(pages)
@@ -54,12 +55,10 @@ function Book({chapterCount}) {
            }
            
            setChapterPages(pages)
-           setChapter(chapter)
         })
       } else  {
         const pages = formatPages("", chapter)
         setChapterPages(pages)
-        setChapter(chapter)
       }
     })
   },[chapter, showChapterLastPage,http])
