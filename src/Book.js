@@ -11,7 +11,7 @@ function Book({bookKey, updateBookKey}) {
 
   const netlify = "https://8th-grade.netlify.app"
   const localhost = "http://localhost:3000"
-  const production = true
+  const production = false
   const http = production ? netlify : localhost
   const [chapter, setChapter] = useState(() => -1)
   const [showChapterLastPage, setShowChapterLastPage] = useState(() => false)

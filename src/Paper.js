@@ -6,6 +6,8 @@ function Paper({ prevPage, nextPage ,text,
   audioFile })
 {
   const print = useRef()
+  const lastAudioFile = useRef()
+  const audioControl = useRef()
 
   useEffect(() => {
     print.current.innerHTML = text 
@@ -28,16 +30,23 @@ function Paper({ prevPage, nextPage ,text,
 
   let audio = null
   if(audioFile) {
-    console.log(audioFile)
     audio =     
     <div className="_audioOutter">
       <div className="_audioInner">
-        <audio controls className="_audio">
+        <audio controls className="_audio" ref={audioControl}>
           <source src={`./audio/${audioFile}`} type={`audio/mpeg`} />
         </audio>
       </div>
     </div>
   }
+  console.log(lastAudioFile.current + "  " + audioFile)
+  if (audioControl.current) {
+    if (audioFile !== lastAudioFile.current) {
+      lastAudioFile.current = audioFile
+      audioControl.current.load()
+    }
+  }
+
     
   return(<>
     <div style={paperStyle}>
