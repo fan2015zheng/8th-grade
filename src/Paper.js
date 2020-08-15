@@ -39,7 +39,7 @@ function Paper({ prevPage, nextPage ,text,
       </div>
     </div>
   }
-  console.log(lastAudioFile.current + "  " + audioFile)
+  
   if (audioControl.current) {
     if (audioFile !== lastAudioFile.current) {
       lastAudioFile.current = audioFile

@@ -41,4 +41,3 @@ Glen, "Do you want to stay the night?"
 Markéta, "What?"
 
 Glen, "Just kidding."
-
