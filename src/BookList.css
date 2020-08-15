@@ -1,0 +1,18 @@
+._brandDiv {
+  width: 100%;
+  padding: 20px;
+}
+._brandText {
+  padding: 4px 20px 6px;
+  border: dashed 1px rebeccapurple;
+  border-radius: 20px;
+  font-size: 24px;
+  font-weight: bolder;
+  color: rebeccapurple;
+}
+._book {  
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}

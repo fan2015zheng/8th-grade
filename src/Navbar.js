@@ -1,8 +1,12 @@
 import React from 'react'
 import './Navbar.css'
 import Util from './Util'
+import BookInfo from './BookInfo'
 
-function Navbar({chapter, page, tableOfContent, pageCount, updateChapter, updatePage}) {
+function Navbar({chapter, page, bookKey, updateBookKey,
+   tableOfContent, pageCount, updateChapter, updatePage}) {
+  const book = BookInfo.getBook(bookKey)
+
   let pageNumbers = []
   let chapterText = "Chapters"
   let pageText = "Pages"
@@ -48,7 +52,9 @@ function Navbar({chapter, page, tableOfContent, pageCount, updateChapter, update
   return(<>
     <nav className="navbar navbar-expand-sm bg-light navbar-light _navbar">
     
-      <span className="navbar-brand _brand">8th Grade</span>
+      <span className="navbar-brand _brand _pointer" onClick={() => {updateBookKey("")}}>
+        {book.name}
+      </span>
 
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span className="navbar-toggler-icon"></span>

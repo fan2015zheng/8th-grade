@@ -2,7 +2,8 @@ import React, {useEffect, useRef}  from 'react'
 import './Paper.css'
 
 function Paper({ prevPage, nextPage ,text,
-  pagePaddingLeft, pagePaddingRight, pagePaddingTop, fontSize, lineHeight})
+  pagePaddingLeft, pagePaddingRight, pagePaddingTop, fontSize, lineHeight,
+  audioFile })
 {
   const print = useRef()
 
@@ -25,6 +26,19 @@ function Paper({ prevPage, nextPage ,text,
     lineHeight: lineHeight
   }
 
+  let audio = null
+  if(audioFile) {
+    console.log(audioFile)
+    audio =     
+    <div className="_audioOutter">
+      <div className="_audioInner">
+        <audio controls className="_audio">
+          <source src={`./audio/${audioFile}`} type={`audio/mpeg`} />
+        </audio>
+      </div>
+    </div>
+  }
+    
   return(<>
     <div style={paperStyle}>
       <div style={printStyle} className="_print" ref={print}>
@@ -35,6 +49,7 @@ function Paper({ prevPage, nextPage ,text,
       <div className="_paperMiddle" data-toggle="collapse" data-target="#bookNavbar"/>
       <div className="_paperRight" onClick={nextPage}/>
     </div>
+    {audio}
   </>)
 }
 

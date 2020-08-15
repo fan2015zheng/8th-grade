@@ -5,6 +5,9 @@ export default class Util {
 }
 
 function trunkText(text, count) {
+  if (!text) {
+    return ""
+  }
   if (text.length <= count) {
     return text
   } else {

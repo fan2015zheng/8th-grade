@@ -2,8 +2,12 @@ import React, {useState, useEffect, useRef} from 'react'
 import './Book.css'
 import Navbar from './Navbar'
 import Paper from './Paper'
+import BookInfo from './BookInfo'
 
-function Book({chapterCount}) {
+function Book({bookKey, updateBookKey}) {
+
+  const book = BookInfo.getBook(bookKey)
+  const chapterCount = book.chapterCount
 
   const netlify = "https://8th-grade.netlify.app"
   const localhost = "http://localhost:3000"
@@ -25,7 +29,7 @@ function Book({chapterCount}) {
   useEffect(()=> {
    
     function handleResize() {
-      const pages = formatPages(chapterText.current, chapter)
+      const pages = formatPages(chapterText.current, chapter, book)
       setChapterPages(pages)
     }
     window.addEventListener('resize',handleResize)
@@ -36,17 +40,19 @@ function Book({chapterCount}) {
   })
 
   useEffect(()=>{
-    fetch(`${http}/books/8th-grade/tableOfContent.json`)
-    .then(res => res.json())
+    fetch(`${http}/books/${bookKey}/tableOfContent.json`)
+    .then(res => {
+      return res.json()
+    })
     .then(data => {
       tableOfContent.current = data
 
       if (chapter >= 0) {
-        fetch(`${http}/books/8th-grade/chapter${chapter}.txt`)
+        fetch(`${http}/books/${bookKey}/chapter${chapter}.txt`)
         .then(res => res.text())
         .then(data => {
            chapterText.current = data
-           const pages = formatPages(data, chapter)
+           const pages = formatPages(data, chapter, book)
   
            if (showChapterLastPage) {
              setPage(pages.length)
@@ -57,24 +63,28 @@ function Book({chapterCount}) {
            setChapterPages(pages)
         })
       } else  {
-        const pages = formatPages("", chapter)
+        const pages = formatPages("", chapter, book)
         setChapterPages(pages)
       }
     })
-  },[chapter, showChapterLastPage,http])
+  },[chapter, showChapterLastPage,http,bookKey, book])
 
 
-  function formatPages(data, chapter) {
+  function formatPages(data, chapter, book) {
     let pages = [""]
 
     if (chapter === -1) {
-      pages[0] = `<div class='_bookName'><div>${"8th Grade"}</div></div>`
+      pages[0] = `<div class='_bookName'><div>${book.name}</div></div>`
     }
     else {
       const paperWidth = window.visualViewport.width
       const paperHeight = window.visualViewport.height
       const xMax = paperWidth - pagePaddingLeft - pagePaddingRight
-      const yMax = paperHeight - pagePaddingTop * 2
+      let yMax = paperHeight - pagePaddingTop * 2
+
+      if (book.audio && book.audio[chapter]) {
+        yMax = yMax - 50
+      }
   
       pages = formatPagesBasedOnPageSize(data, xMax/10, Math.floor(yMax/28))
       
@@ -116,6 +126,10 @@ function Book({chapterCount}) {
       setShowChapterLastPage(true)
     }
   }
+  let audioFile = null
+  if (book.audio && book.audio[chapter]) {
+    audioFile = book.audio[chapter]
+  }
 
   return(<>
     <Paper chapter={chapter} page={page}
@@ -128,10 +142,12 @@ function Book({chapterCount}) {
      lineHeight={lineHeight}
      prevPage={prevPage}
      nextPage={nextPage}
+     audioFile = {audioFile}
      />
-
+    
     <div className="collapse" id="bookNavbar">
-      <Navbar chapter={chapter} page={page} 
+      <Navbar chapter={chapter} page={page} bookKey={bookKey}
+        updateBookKey={updateBookKey}
         tableOfContent={tableOfContent.current}
         pageCount = {chapterPages.length}
         updateChapter={updateChapter} updatePage={updatePage}/>

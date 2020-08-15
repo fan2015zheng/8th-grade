@@ -20,3 +20,18 @@
   font-family: Sabon;
   height: calc(100% - 50px);
 }
+
+._audioOutter {
+  z-index: 5;
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+}
+._audioInner {
+  position: relative;
+  text-align: center;
+}
+
+._audio {
+  height: 40px;
+}
