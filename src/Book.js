@@ -59,7 +59,7 @@ function Book({bookKey, updateBookKey}) {
            } else {
              setPage(1)
            }
-           
+          
            setChapterPages(pages)
         })
       } else  {
@@ -98,9 +98,9 @@ function Book({bookKey, updateBookKey}) {
     return pages
   }
 
-
   function updateChapter(chapter) {
     setChapter(chapter)
+    setShowChapterLastPage(false)
     setPage(1)
   }
   function updatePage(page) {
@@ -121,6 +121,7 @@ function Book({bookKey, updateBookKey}) {
   function prevPage() {
     if (page - 1 > 0) {
       setPage(page - 1)
+
     } else if (chapter - 1 >= -1) {
       setChapter(chapter - 1)
       setShowChapterLastPage(true)
@@ -133,7 +134,6 @@ function Book({bookKey, updateBookKey}) {
 
   return(<>
     <Paper chapter={chapter} page={page}
-     updateChapter={updateChapter} updatePage={updatePage} 
      text={chapterPages[page-1] ?? ""}
      pagePaddingLeft={pagePaddingLeft}
      pagePaddingRight={pagePaddingRight}
